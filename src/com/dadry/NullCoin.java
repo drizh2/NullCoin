@@ -4,6 +4,10 @@ import java.util.logging.Logger;
 import com.dadry.Model.Block;
 import com.dadry.Model.Transaction;
 import com.dadry.Model.Wallet;
+import com.dadry.Threads.MiningThread;
+import com.dadry.Threads.PeerClient;
+import com.dadry.Threads.PeerServer;
+import com.dadry.Threads.UI;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -30,6 +34,7 @@ public class NullCoin extends Application {
     @Override
     public void init() throws Exception {
         try {
+            // -------- WALLET DB ------------
             Connection walletConnection = DriverManager
                     .getConnection("jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/wallet.db");
             Statement walletStatment = walletConnection.createStatement();
@@ -56,6 +61,7 @@ public class NullCoin extends Application {
             walletConnection.close();
             WalletData.getInstance().loadWallet();
 
+            // -------- BLOCKCHAIN DB ------------
             Connection blockchainConnection = DriverManager
                     .getConnection("jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/blockchain.db");
             Statement blockchainStmt = blockchainConnection.createStatement();
@@ -116,6 +122,30 @@ public class NullCoin extends Application {
             }
             blockchainStmt.close();
             blockchainConnection.close();
+
+            // -------- NEW NETWORK DB (PORTS) ------------
+            Connection networkConnection = DriverManager
+                    .getConnection("jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/network.db");
+            Statement networkStmt = networkConnection.createStatement();
+            networkStmt.executeUpdate("CREATE TABLE IF NOT EXISTS PORTS ( " +
+                    " ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    " PORT INTEGER NOT NULL UNIQUE " +
+                    ")");
+
+            ResultSet portResultSet = networkStmt.executeQuery("SELECT COUNT(*) AS total FROM PORTS");
+            if (portResultSet.next() && portResultSet.getInt("total") == 0) {
+                PreparedStatement portInsert = networkConnection
+                        .prepareStatement("INSERT INTO PORTS(PORT) VALUES (?)");
+                int[] defaultPorts = {6001, 6002};
+                for (int port : defaultPorts) {
+                    portInsert.setInt(1, port);
+                    portInsert.executeUpdate();
+                }
+                portInsert.close();
+            }
+            portResultSet.close();
+            networkStmt.close();
+            networkConnection.close();
         } catch (SQLException |
                 NoSuchAlgorithmException |
                 InvalidKeyException |
