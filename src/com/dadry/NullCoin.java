@@ -2,6 +2,7 @@ package com.dadry;
 
 import java.util.logging.Logger;
 import com.dadry.Model.Block;
+import com.dadry.Service.WalletData;
 import com.dadry.Model.Transaction;
 import com.dadry.Model.Wallet;
 import com.dadry.Threads.MiningThread;
