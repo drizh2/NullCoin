@@ -1,6 +1,7 @@
 package com.dadry.Controller;
 
 import com.dadry.Model.Transaction;
+import com.dadry.Service.BlockchainData;
 import com.dadry.Service.WalletData;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -71,7 +72,7 @@ public class MainWindowController {
         Optional<ButtonType> result = newTransactionController.showAndWait();
         if (result.isPresent() ) {
             tableview.setItems(BlockchainData.getInstance().getTransactionLedgerFX());
-            nullCoins.setText(BlockchainData.getInstance().getWalletBallanceFX());
+            nullCoins.setText(BlockchainData.getInstance().getWalletBalanceFX());
         }
     }
 
@@ -79,7 +80,7 @@ public class MainWindowController {
     public void refresh() {
         tableview.setItems(BlockchainData.getInstance().getTransactionLedgerFX());
         tableview.getSelectionModel().select(0);
-        nullCoins.setText(BlockchainData.getInstance().getWalletBallanceFX());
+        nullCoins.setText(BlockchainData.getInstance().getWalletBalanceFX());
     }
 
     @FXML

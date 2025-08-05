@@ -1,5 +1,7 @@
 package com.dadry.Threads;
 
+import com.dadry.Service.BlockchainData;
+
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.logging.Logger;
@@ -13,7 +15,7 @@ public class MiningThread extends Thread {
         while (true) {
             long now = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC);
             long lastMinedBlock = LocalDateTime.parse(BlockchainData.getInstance()
-                    .getCurrentBlockChain().getLast().getTimeStamp()).toEpochSecond(ZoneOffset.UTC);
+                    .getCurrentBlockchain().getLast().getTimeStamp()).toEpochSecond(ZoneOffset.UTC);
 
             long timeSinceLastBlock = now - lastMinedBlock;
             long miningInterval = BlockchainData.getMiningInterval();
@@ -31,13 +33,13 @@ public class MiningThread extends Thread {
                 } else {
                     LOG.info("MINING NEW BLOCK");
                     BlockchainData.getInstance().mineBlock();
-                    LOG.info(BlockchainData.getInstance().getWalletBallanceFX());
+                    LOG.info(BlockchainData.getInstance().getWalletBalanceFX());
 
                     sleepSmart(1000);
                 }
             }
-            LOG.info(LocalDateTime.parse(BlockchainData.getInstance()
-                    .getCurrentBlockChain().getLast().getTimeStamp()).toEpochSecond(ZoneOffset.UTC));
+            LOG.info(String.valueOf(LocalDateTime.parse(BlockchainData.getInstance()
+                    .getCurrentBlockchain().getLast().getTimeStamp()).toEpochSecond(ZoneOffset.UTC)));
 
             BlockchainData.getInstance().setMiningPoints(BlockchainData.getInstance().getMiningPoints() + 2);
 

@@ -1,6 +1,7 @@
 package com.dadry.Threads;
 
 import com.dadry.Model.Block;
+import com.dadry.Service.BlockchainData;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -1,6 +1,7 @@
 package com.dadry.Controller;
 
 import com.dadry.Model.Transaction;
+import com.dadry.Service.BlockchainData;
 import com.dadry.Service.WalletData;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

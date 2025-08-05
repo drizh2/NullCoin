@@ -2,6 +2,7 @@ package com.dadry;
 
 import java.util.logging.Logger;
 import com.dadry.Model.Block;
+import com.dadry.Service.BlockchainData;
 import com.dadry.Service.WalletData;
 import com.dadry.Model.Transaction;
 import com.dadry.Model.Wallet;
@@ -157,6 +158,6 @@ public class NullCoin extends Application {
             e.printStackTrace();
         }
 
-        BlockchainData.getInstance().loadBlockChain();
+        BlockchainData.getInstance().loadBlockchain();
     }
 }

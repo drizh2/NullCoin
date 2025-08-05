@@ -1,6 +1,7 @@
 package com.dadry.Threads;
 
 import com.dadry.Model.Block;
+import com.dadry.Service.BlockchainData;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,7 +35,7 @@ public class PeerClient extends Thread {
                 ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
 
-                LinkedList<Block> blockchain = BlockChainData.getInstance().getCurrentBockchain();
+                LinkedList<Block> blockchain = BlockchainData.getInstance().getCurrentBlockchain();
                 objectOutput.writeObject(blockchain);
 
                 LinkedList<Block> returnedBlockchain = (LinkedList<Block>) objectInput.readObject();
