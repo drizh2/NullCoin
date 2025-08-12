@@ -71,7 +71,7 @@ public class NullCoin extends Application {
                     " ID INTEGER NOT NULL UNIQUE, " +
                     " PREVIOUS_HASH BLOB UNIQUE, " +
                     " CURRENT_HASH BLOB UNIQUE, " +
-                    " LEDGER_ID INTEGER NOT NULL UNIQUE, " +
+                    " LEDGER_ID INTEGER UNIQUE, " +
                     " CREATED_ON  TEXT, " +
                     " CREATED_BY  BLOB, " +
                     " MINING_POINTS  TEXT, " +
@@ -86,6 +86,8 @@ public class NullCoin extends Application {
                 Block firstBlock = new Block();
                 firstBlock.setMinedBy(WalletData.getInstance().getWallet().getPublicKey().getEncoded());
                 firstBlock.setTimeStamp(LocalDateTime.now().toString());
+                firstBlock.setLedgerId(0);
+                firstBlock.setMiningPoints(0);
                 Signature signing = Signature.getInstance("SHA256withDSA");
                 signing.initSign(WalletData.getInstance().getWallet().getPrivateKey());
                 signing.update(firstBlock.toString().getBytes());
@@ -125,29 +127,29 @@ public class NullCoin extends Application {
             blockchainStmt.close();
             blockchainConnection.close();
 
-            // -------- NEW NETWORK DB (PORTS) ------------
-            Connection networkConnection = DriverManager
-                    .getConnection("jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/network.db");
-            Statement networkStmt = networkConnection.createStatement();
-            networkStmt.executeUpdate("CREATE TABLE IF NOT EXISTS PORTS ( " +
-                    " ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    " PORT INTEGER NOT NULL UNIQUE " +
-                    ")");
-
-            ResultSet portResultSet = networkStmt.executeQuery("SELECT COUNT(*) AS total FROM PORTS");
-            if (portResultSet.next() && portResultSet.getInt("total") == 0) {
-                PreparedStatement portInsert = networkConnection
-                        .prepareStatement("INSERT INTO PORTS(PORT) VALUES (?)");
-                int[] defaultPorts = {6001, 6002};
-                for (int port : defaultPorts) {
-                    portInsert.setInt(1, port);
-                    portInsert.executeUpdate();
-                }
-                portInsert.close();
-            }
-            portResultSet.close();
-            networkStmt.close();
-            networkConnection.close();
+//            // -------- NEW NETWORK DB (PORTS) ------------
+//            Connection networkConnection = DriverManager
+//                    .getConnection("jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/network.db");
+//            Statement networkStmt = networkConnection.createStatement();
+//            networkStmt.executeUpdate("CREATE TABLE IF NOT EXISTS PORTS ( " +
+//                    " ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                    " PORT INTEGER NOT NULL UNIQUE " +
+//                    ")");
+//
+//            ResultSet portResultSet = networkStmt.executeQuery("SELECT COUNT(*) AS total FROM PORTS");
+//            if (portResultSet.next() && portResultSet.getInt("total") == 0) {
+//                PreparedStatement portInsert = networkConnection
+//                        .prepareStatement("INSERT INTO PORTS(PORT) VALUES (?)");
+//                int[] defaultPorts = {6001, 6002};
+//                for (int port : defaultPorts) {
+//                    portInsert.setInt(1, port);
+//                    portInsert.executeUpdate();
+//                }
+//                portInsert.close();
+//            }
+//            portResultSet.close();
+//            networkStmt.close();
+//            networkConnection.close();
         } catch (SQLException |
                 NoSuchAlgorithmException |
                 InvalidKeyException |

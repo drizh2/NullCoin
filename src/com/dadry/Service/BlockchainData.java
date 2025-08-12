@@ -237,7 +237,7 @@ public class BlockchainData {
     private void addBlock(Block block) {
         try {
             Connection connection = DriverManager.getConnection
-                    ("jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/blockchain");
+                    ("jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/blockchain.db");
             PreparedStatement pstmt;
             pstmt = connection.prepareStatement
                     ("INSERT INTO BLOCKCHAIN(PREVIOUS_HASH, CURRENT_HASH, LEDGER_ID, CREATED_ON," +
@@ -261,7 +261,7 @@ public class BlockchainData {
     private void replaceBlockchainInDatabase(LinkedList<Block> receivedBC) {
         try {
             Connection connection = DriverManager.getConnection
-                    ("jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/blockchain");
+                    ("jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/blockchain.db");
             Statement clearDBStatement = connection.createStatement();
             clearDBStatement.executeUpdate(" DELETE FROM BLOCKCHAIN ");
             clearDBStatement.executeUpdate(" DELETE FROM TRANSACTIONS ");

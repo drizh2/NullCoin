@@ -25,7 +25,7 @@ public class WalletData {
 
     public void loadWallet() throws SQLException, NoSuchAlgorithmException, InvalidKeySpecException {
         Connection walletConnection = DriverManager.getConnection(
-                "jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/wallet");
+                "jdbc:sqlite:/home/dadry/Projects/NullCoin/NullCoin/db/wallet.db");
         Statement statement = walletConnection.createStatement();
         ResultSet resultSet;
         resultSet = statement.executeQuery("SELECT * FROM wallet");
